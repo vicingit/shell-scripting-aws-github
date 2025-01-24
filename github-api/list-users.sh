@@ -1,15 +1,29 @@
 #!/bin/bash
 
-# GitHub API URL
+# Script Name: list_read_access_users.sh
+# Description: This script lists users with read access to a specified GitHub repository using the GitHub API.
+# Author: Your Name
+# Date: YYYY-MM-DD
+# Version: 1.0
+
+# GitHub API Base URL
 API_URL="https://api.github.com"
 
 # GitHub username and personal access token
-USERNAME=$username
-TOKEN=$token
+USERNAME=$username  # Replace with your GitHub username or pass it as an environment variable
+TOKEN=$token        # Replace with your personal access token or pass it as an environment variable
 
-# User and Repository information
-REPO_OWNER=$1
-REPO_NAME=$2
+# Helper function to display script usage instructions
+function display_help {
+    echo "Usage: $0 <REPO_OWNER> <REPO_NAME>"
+    echo ""
+    echo "Arguments:"
+    echo "  REPO_OWNER    The owner of the repository (GitHub username or organization name)"
+    echo "  REPO_NAME     The name of the repository"
+    echo ""
+    echo "Example:"
+    echo "  $0 octocat Hello-World"
+}
 
 # Function to make a GET request to the GitHub API
 function github_api_get {
@@ -37,6 +51,14 @@ function list_users_with_read_access {
 }
 
 # Main script
+if [[ $# -ne 2 ]]; then
+    echo "Error: Invalid arguments provided."
+    display_help
+    exit 1
+fi
+
+REPO_OWNER=$1
+REPO_NAME=$2
 
 echo "Listing users with read access to ${REPO_OWNER}/${REPO_NAME}..."
 list_users_with_read_access
